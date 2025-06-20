@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizCraft - Create and Take Quizzes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>QuizCraft</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" id="home-link">Home</a></li>
+                    <li><a href="#" id="browse-link">Browse Quizzes</a></li>
+                    <li><a href="#" id="leaderboard-link">Leaderboard</a></li>
+                    <li><a href="#" id="login-link">Login/Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Login/Register Form -->
+        <section id="auth-section" class="hidden">
+            <div class="auth-container">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Register</button>
+                </div>
+                
+                <div class="tab-content" id="login">
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        <button type="submit" class="btn">Login</button>
+                    </form>
+                </div>
+                
+                <div class="tab-content hidden" id="register">
+                    <form id="register-form">
+                        <div class="form-group">
+                            <label for="register-name">Full Name</label>
+                            <input type="text" id="register-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">Email</label>
+                            <input type="email" id="register-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">Password</label>
+                            <input type="password" id="register-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-confirm">Confirm Password</label>
+                            <input type="password" id="register-confirm" required>
+                        </div>
+                        <button type="submit" class="btn">Register</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Home Section -->
+        <section id="home-section">
+            <div class="hero">
+                <h2>Welcome to QuizCraft</h2>
+                <p>Create, share, and take quizzes on any topic!</p>
+                <div class="btn-group">
+                    <button id="create-quiz-btn" class="btn primary">Create Quiz</button>
+                    <button id="take-quiz-btn" class="btn secondary">Take a Quiz</button>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>Create Quizzes</h3>
+                    <p>Design your own quizzes with multiple-choice questions, time limits, and more!</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Take Quizzes</h3>
+                    <p>Challenge yourself with quizzes created by our community.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Track Progress</h3>
+                    <p>View your scores and compare with others on the leaderboard.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Browse Quizzes Section -->
+        <section id="browse-section" class="hidden">
+            <h2>Browse Quizzes</h2>
+            <div class="search-container">
+                <input type="text" id="search-quiz" placeholder="Search for quizzes...">
+                <select id="category-filter">
+                    <option value="">All Categories</option>
+                    <option value="education">Education</option>
+                    <option value="science">Science</option>
+                    <option value="technology">Technology</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="sports">Sports</option>
+                </select>
+                <button class="btn" id="search-btn">Search</button>
+            </div>
+            
+            <div class="quiz-grid" id="quiz-list">
+                <!-- Quiz cards will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Quiz Creation Section -->
+        <section id="create-section" class="hidden">
+            <h2>Create a New Quiz</h2>
+            <form id="quiz-form">
+                <div class="form-group">
+                    <label for="quiz-title">Quiz Title</label>
+                    <input type="text" id="quiz-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="quiz-description">Description</label>
+                    <textarea id="quiz-description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="quiz-category">Category</label>
+                    <select id="quiz-category" required>
+                        <option value="">Select a category</option>
+                        <option value="education">Education</option>
+                        <option value="science">Science</option>
+                        <option value="technology">Technology</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="time-limit">Time Limit (minutes, optional)</label>
+                    <input type="number" id="time-limit" min="1" max="60">
+                </div>
+                
+                <h3>Questions</h3>
+                <div id="questions-container">
+                    <!-- Questions will be added here -->
+                </div>
+                
+                <button type="button" id="add-question-btn" class="btn secondary">Add Question</button>
+                <button type="submit" class="btn primary">Create Quiz</button>
+            </form>
+        </section>
+
+        <!-- Take Quiz Section -->
+        <section id="take-quiz-section" class="hidden">
+            <div id="quiz-header">
+                <h2 id="quiz-title-display"></h2>
+                <p id="quiz-description-display"></p>
+                <div id="quiz-meta">
+                    <span id="question-counter">Question 1 of 10</span>
+                    <span id="timer" class="hidden">Time remaining: <span id="time-display">00:00</span></span>
+                </div>
+            </div>
+            
+            <div id="quiz-content">
+                <div id="question-display"></div>
+                <div id="options-container"></div>
+                
+                <div class="quiz-navigation">
+                    <button id="prev-question" class="btn secondary">Previous</button>
+                    <button id="next-question" class="btn primary">Next</button>
+                    <button id="submit-quiz" class="btn primary hidden">Submit Quiz</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="hidden">
+            <h2>Quiz Results</h2>
+            <div class="results-container">
+                <div class="score-display">
+                    <div class="score-circle">
+                        <span id="score-percentage">0%</span>
+                    </div>
+                    <p>You scored <span id="score-raw">0/0</span></p>
+                </div>
+                
+                <div class="results-breakdown">
+                    <h3>Question Breakdown</h3>
+                    <div id="questions-breakdown">
+                        <!-- Question results will be added here -->
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button id="retake-quiz" class="btn secondary">Retake Quiz</button>
+                    <button id="return-home" class="btn primary">Back to Home</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard-section" class="hidden">
+            <h2>Leaderboard</h2>
+            
+            <div class="leaderboard-filters">
+                <select id="leaderboard-quiz-filter">
+                    <option value="">All Quizzes</option>
+                    <!-- Quiz options will be loaded here -->
+                </select>
+                <select id="leaderboard-time-filter">
+                    <option value="all-time">All Time</option>
+                    <option value="this-month">This Month</option>
+                    <option value="this-week">This Week</option>
+                </select>
+            </div>
+            
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Quiz</th>
+                        <th>Score</th>
+                        <th>Time</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-entries">
+                    <!-- Leaderboard entries will be loaded here -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Analytics Section (for quiz creators) -->
+        <section id="analytics-section" class="hidden">
+            <h2>Quiz Analytics</h2>
+            <div class="quiz-selector">
+                <label for="analytics-quiz-select">Select Quiz:</label>
+                <select id="analytics-quiz-select">
+                    <!-- User's quizzes will be loaded here -->
+                </select>
+            </div>
+            
+            <div class="analytics-dashboard">
+                <div class="analytics-card">
+                    <h3>Total Attempts</h3>
+                    <div class="analytics-value" id="total-attempts">0</div>
+                </div>
+                <div class="analytics-card">
+                    <h3>Average Score</h3>
+                    <div class="analytics-value" id="average-score">0%</div>
+                </div>
+                <div class="analytics-card">
+                    <h3>Completion Rate</h3>
+                    <div class="analytics-value" id="completion-rate">0%</div>
+                </div>
+            </div>
+            
+            <div class="analytics-details">
+                <h3>Question Performance</h3>
+                <div id="question-performance">
+                    <!-- Question performance will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 QuizCraft. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Templates -->
+    <template id="question-template">
+        <div class="question-item">
+            <div class="form-group">
+                <label>Question Text</label>
+                <input type="text" class="question-text" required>
+            </div>
+            <div class="options-container">
+                <div class="option-item">
+                    <input type="radio" name="correct-answer-0" value="0" required>
+                    <input type="text" class="option-text" placeholder="Option 1" required>
+                </div>
+                <div class="option-item">
+                    <input type="radio" name="correct-answer-0" value="1" required>
+                    <input type="text" class="option-text" placeholder="Option 2" required>
+                </div>
+            </div>
+            <div class="question-actions">
+                <button type="button" class="add-option-btn">Add Option</button>
+                <button type="button" class="remove-question-btn">Remove Question</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="quiz-card-template">
+        <div class="quiz-card">
+            <div class="quiz-card-header">
+                <h3 class="quiz-card-title"></h3>
+                <span class="quiz-card-category"></span>
+            </div>
+            <p class="quiz-card-description"></p>
+            <div class="quiz-card-meta">
+                <span class="quiz-card-questions"></span>
+                <span class="quiz-card-author"></span>
+            </div>
+            <button class="take-quiz-btn btn">Take Quiz</button>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
